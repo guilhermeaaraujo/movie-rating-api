@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public User update(User newUser) {
-        User user = findById(newUser.id);
+        User user = findById(newUser.getId());
         updateData(user, newUser);
         return repository.save(user);
     }
