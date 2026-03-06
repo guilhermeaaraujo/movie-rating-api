@@ -1,5 +1,6 @@
 package com.guilherme.movierating.model.entities;
 
+import com.guilherme.movierating.model.enums.UserRole;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,13 +15,16 @@ public class User {
     private String email;
     private String password;
 
+    private UserRole role;
+
     public User() {
     }
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String password, UserRole role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public String getId() {
@@ -53,6 +57,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     @Override
