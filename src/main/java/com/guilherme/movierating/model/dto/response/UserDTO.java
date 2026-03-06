@@ -1,4 +1,4 @@
-package com.guilherme.movierating.model.dto;
+package com.guilherme.movierating.model.dto.response;
 
 import com.guilherme.movierating.model.entities.User;
 
