@@ -31,8 +31,9 @@ public class UserService {
     }
 
     public User insert(User user) {
+        if (repository.findByEmail(user.getEmail()).isPresent()) throw new RuntimeException("This email is already taken");
         encodePassword(user);
-        return repository.insert(user);
+        return repository.save(user);
     }
 
     public User update(String id, UserUpdateRequest request) {
