@@ -57,4 +57,11 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> findAuthenticatedUserDetails() {
+        User authenticatedUser = userService.findAuthenticatedUserDetails();
+
+        return ResponseEntity.ok().body(new UserDTO(authenticatedUser));
+    }
 }
