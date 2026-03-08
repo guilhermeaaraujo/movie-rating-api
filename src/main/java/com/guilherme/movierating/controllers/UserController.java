@@ -1,5 +1,7 @@
 package com.guilherme.movierating.controllers;
 
+import com.guilherme.movierating.model.entities.Review;
+import com.guilherme.movierating.services.ReviewService;
 import com.guilherme.movierating.services.UserService;
 import com.guilherme.movierating.model.dto.response.UserDTO;
 import com.guilherme.movierating.model.dto.request.UserUpdateRequest;
@@ -18,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
@@ -62,6 +67,12 @@ public class UserController {
     public ResponseEntity<UserDTO> findAuthenticatedUserDetails() {
         User authenticatedUser = userService.findAuthenticatedUserDetails();
 
-        return ResponseEntity.ok().body(new UserDTO(authenticatedUser));
+        return ResponseEntity.ok(new UserDTO(authenticatedUser));
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<List<Review>> findReviewsByUserId(@PathVariable String id) {
+        List<Review> reviews = reviewService.findByUserId(id);
+        return ResponseEntity.ok(reviews);
     }
 }

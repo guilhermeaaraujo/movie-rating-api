@@ -1,7 +1,9 @@
 package com.guilherme.movierating.controllers;
 
 import com.guilherme.movierating.model.entities.Movie;
+import com.guilherme.movierating.model.entities.Review;
 import com.guilherme.movierating.services.MovieService;
+import com.guilherme.movierating.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,10 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
-    
+
+    @Autowired
+    private ReviewService reviewService;
+
     @GetMapping
     public ResponseEntity<List<Movie>> findAll() {
         List<Movie> movies = movieService.findAll();
@@ -48,5 +53,11 @@ public class MovieController {
     public ResponseEntity<Void> delete(@PathVariable String id) {
         movieService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<List<Review>> findReviewsByMovieId(@PathVariable String id) {
+        List<Review> reviews = reviewService.findByMovieId(id);
+        return ResponseEntity.ok(reviews);
     }
 }

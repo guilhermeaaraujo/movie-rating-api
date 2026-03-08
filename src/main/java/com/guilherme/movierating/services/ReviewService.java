@@ -1,9 +1,12 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.model.entities.Movie;
 import com.guilherme.movierating.model.entities.Review;
 import com.guilherme.movierating.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -27,5 +30,13 @@ public class ReviewService {
 
     public void delete(String reviewId) {
         reviewRepository.deleteById(reviewId);
+    }
+
+    public List<Review> findByUserId(String userId) {
+        return reviewRepository.findByUserId(userId);
+    }
+
+    public List<Review> findByMovieId(String movieId) {
+        return reviewRepository.findByMovieId(movieId);
     }
 }
