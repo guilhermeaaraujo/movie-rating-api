@@ -45,7 +45,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-        @Operation(summary = "Buscar usuário", description = "Retorna um usuário por id")
+    @Operation(summary = "Buscar usuário", description = "Retorna um usuário por id")
     @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso")
     @ApiResponse(responseCode = "403", description = "Apenas ADMINs podem acessar esse endpoint")
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
