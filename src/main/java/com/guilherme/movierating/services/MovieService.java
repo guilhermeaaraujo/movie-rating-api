@@ -1,5 +1,6 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.exceptions.ForbiddenException;
 import com.guilherme.movierating.exceptions.ResourceNotFoundException;
 import com.guilherme.movierating.model.entities.Movie;
 import com.guilherme.movierating.repositories.MovieRepository;
@@ -42,7 +43,7 @@ public class MovieService {
         } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Movie not found");
         } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException("Cannot delete this movie");
+            throw new ForbiddenException("Cannot delete this movie");
         }
     }
 

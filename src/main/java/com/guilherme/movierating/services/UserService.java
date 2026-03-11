@@ -1,5 +1,7 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.exceptions.BadRequestException;
+import com.guilherme.movierating.exceptions.ForbiddenException;
 import com.guilherme.movierating.exceptions.ResourceNotFoundException;
 import com.guilherme.movierating.model.dto.request.UserUpdateRequest;
 import com.guilherme.movierating.model.entities.User;
@@ -34,7 +36,7 @@ public class UserService {
     }
 
     public User insert(User user) {
-        if (repository.findByEmail(user.getEmail()).isPresent()) throw new RuntimeException("This email is already taken");
+        if (repository.findByEmail(user.getEmail()).isPresent()) throw new BadRequestException("This email is already taken");
         encodePassword(user);
         return repository.save(user);
     }
@@ -51,7 +53,7 @@ public class UserService {
         } catch (EmptyResultDataAccessException e) {
         throw new ResourceNotFoundException("User not found");
         } catch (DataIntegrityViolationException e) {
-        throw new RuntimeException("Cannot delete this user");
+        throw new ForbiddenException("Cannot delete this user");
         }
     }
 

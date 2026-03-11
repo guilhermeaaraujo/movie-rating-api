@@ -1,5 +1,6 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.exceptions.ForbiddenException;
 import com.guilherme.movierating.exceptions.ResourceNotFoundException;
 import com.guilherme.movierating.model.entities.Review;
 import com.guilherme.movierating.model.entities.User;
@@ -29,7 +30,7 @@ public class ReviewService {
         // Usuários não podem adicionar reviews para outros usuários
         User user = userService.findAuthenticatedUserDetails();
         if(!user.getId().equals(review.getUserId())) {
-            throw new RuntimeException("You cannot create an review for another user");
+            throw new ForbiddenException("You cannot create an review for another user");
         }
 
         return reviewRepository.save(review);
@@ -44,7 +45,7 @@ public class ReviewService {
 
         // Usuários podem apenas deletar suas próprias reviews
         if(!authenticadedUser.getId().equals(review.getUserId())) {
-            throw new RuntimeException("You cannot delete another user's review");
+            throw new ForbiddenException("You cannot delete another user's review");
         }
 
         reviewRepository.deleteById(reviewId);
