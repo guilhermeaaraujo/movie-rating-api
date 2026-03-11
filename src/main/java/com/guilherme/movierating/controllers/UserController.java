@@ -43,7 +43,6 @@ public class UserController {
         return ResponseEntity.ok(usersDTO);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     @Operation(summary = "Buscar usuário", description = "Retorna um usuário por id")
     @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso")

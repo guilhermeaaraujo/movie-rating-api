@@ -1,5 +1,6 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.exceptions.ResourceNotFoundException;
 import com.guilherme.movierating.model.entities.Review;
 import com.guilherme.movierating.model.entities.User;
 import com.guilherme.movierating.repositories.ReviewRepository;
@@ -38,7 +39,7 @@ public class ReviewService {
         User authenticadedUser = userService.findAuthenticatedUserDetails();
 
         Review review = reviewRepository.findById(reviewId).orElseThrow(
-                () -> new RuntimeException("Review not found")
+                () -> new ResourceNotFoundException("Review not found")
         );
 
         // Usuários podem apenas deletar suas próprias reviews

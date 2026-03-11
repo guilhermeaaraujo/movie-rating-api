@@ -1,5 +1,6 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.exceptions.ResourceNotFoundException;
 import com.guilherme.movierating.model.entities.Movie;
 import com.guilherme.movierating.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class MovieService {
 
     public Movie findById(String id) {
         return repository.findById(id).orElseThrow(
-                () -> new RuntimeException("Movie not Found")
+                () -> new ResourceNotFoundException("Movie not found")
         );
     }
 
@@ -39,7 +40,7 @@ public class MovieService {
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new RuntimeException("Movie not found");
+            throw new ResourceNotFoundException("Movie not found");
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Cannot delete this movie");
         }

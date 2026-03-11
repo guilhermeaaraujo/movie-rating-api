@@ -1,5 +1,6 @@
 package com.guilherme.movierating.services;
 
+import com.guilherme.movierating.exceptions.ResourceNotFoundException;
 import com.guilherme.movierating.model.dto.request.UserUpdateRequest;
 import com.guilherme.movierating.model.entities.User;
 import com.guilherme.movierating.repositories.UserRepository;
@@ -28,7 +29,7 @@ public class UserService {
 
     public User findById(String id) {
         return repository.findById(id).orElseThrow(
-                () -> new RuntimeException("Resource not Found")
+                () -> new ResourceNotFoundException("User not found")
         );
     }
 
@@ -48,7 +49,7 @@ public class UserService {
         try {
         repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-        throw new RuntimeException("User not found");
+        throw new ResourceNotFoundException("User not found");
         } catch (DataIntegrityViolationException e) {
         throw new RuntimeException("Cannot delete this user");
         }
