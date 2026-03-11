@@ -1,7 +1,7 @@
 package com.guilherme.movierating.services;
 
-import com.guilherme.movierating.model.entities.Movie;
 import com.guilherme.movierating.model.entities.Review;
+import com.guilherme.movierating.model.entities.User;
 import com.guilherme.movierating.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,30 @@ public class ReviewService {
 
     public Review insert(Review review) {
 
-        userService.findById(review.getUserId());
+        // Testa se o filme existe no banco de dados
         movieService.findById(review.getMovieId());
+
+        // Usuários não podem adicionar reviews para outros usuários
+        User user = userService.findAuthenticatedUserDetails();
+        if(!user.getId().equals(review.getUserId())) {
+            throw new RuntimeException("You cannot create an review for another user");
+        }
 
         return reviewRepository.save(review);
     }
 
     public void delete(String reviewId) {
+        User authenticadedUser = userService.findAuthenticatedUserDetails();
+
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new RuntimeException("Review not found")
+        );
+
+        // Usuários podem apenas deletar suas próprias reviews
+        if(!authenticadedUser.getId().equals(review.getUserId())) {
+            throw new RuntimeException("You cannot delete another user's review");
+        }
+
         reviewRepository.deleteById(reviewId);
     }
 
