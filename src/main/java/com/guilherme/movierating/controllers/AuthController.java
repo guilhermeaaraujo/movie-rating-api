@@ -9,6 +9,7 @@ import com.guilherme.movierating.model.dto.response.UserDTO;
 import com.guilherme.movierating.model.entities.User;
 import com.guilherme.movierating.model.enums.UserRole;
 import com.guilherme.movierating.repositories.UserRepository;
+import com.guilherme.movierating.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "authentication", description = "Controlador para autenticação e registro de usuários")
 @SecurityRequirement(name = SecurityConfig.SECURITY)
 public class AuthController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserRepository repository;
@@ -62,11 +66,9 @@ public class AuthController {
     @ApiResponse(responseCode = "500", description = "Erro no servidor")
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterRequest request) {
-        if (repository.findByEmail(request.email()).isPresent()) return ResponseEntity.badRequest().build();
 
-        String encodedPassword = passwordEncoder.encode(request.password());
-        User user = new User(request.name(), request.email(), encodedPassword, UserRole.USER);
-        repository.save(user);
+        User user = new User(request.name(), request.email(), request.password(), UserRole.USER);
+        user = userService.insert(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new UserDTO(user));
     }
